@@ -1,0 +1,81 @@
+
+#######################
+# Common
+#######################
+variable "region" {
+  type = string
+  # Seoul region
+  default = "ap-northeast-2"
+}
+
+variable "az" {
+  type    = list(string)
+  default = ["a", "c"]
+}
+
+# variable "av_zone_full_name" {
+#   type = list(string)
+#   count = length(var.av_zone)
+#   default = [ "${var.region}${var.av_zone[count.index]}" ]
+# }
+
+variable "name_prefix" {
+  type    = string
+  default = "devjs"
+}
+
+variable "common_ssh_key" {
+  type = object({ name = string, path = string })
+  default = {
+    name = "devjs_key"
+    path = "../JSkey.pub"
+  }
+}
+
+#######################
+# Networks (CIDR range) 
+#######################
+variable "cidr_all" {
+  type    = string
+  default = "0.0.0.0/0"
+}
+
+variable "cidr_vpc" {
+  type    = string
+  default = "10.0.0.0/16"
+}
+
+variable "cidr_public_subnets" {
+  type    = list(string)
+  default = ["10.0.1.0/24", "10.0.2.0/24"]
+}
+
+variable "cidr_private_subnets" {
+  type    = list(string)
+  default = ["10.0.3.0/24", "10.0.4.0/24"]
+}
+
+variable "cidr_private_db_subnets" {
+  type    = list(string)
+  default = ["10.0.5.0/24", "10.0.6.0/24"]
+}
+
+#######################
+# EC2
+#######################
+variable "ec2_webserver_options" {
+  type = object(
+    {
+      ami               = string,
+      instance_type     = string,
+      user_data_path    = string,
+      sample_private_ip = string
+    }
+  )
+  default = {
+    ami               = "ami-04e8dfc09b22389ad"
+    instance_type     = "t2.micro"
+    user_data_path    = "../install.sh"
+    sample_private_ip = "10.0.1.11"
+  }
+}
